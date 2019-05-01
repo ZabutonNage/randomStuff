@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HTML Equivalent Test</title>
+</head>
+<body>
+
+<div id="test" class="container">
+    <!-- a comment -->
+    <span class="werd">Werd</span>
+</div>
+
+
+<script>
+    const el = document.querySelector(`#test`);
+    const html2 = `<div id="test" class="container"><span class="werd">Werd</span></div>`;
+
+    const eq = htmlEquivalent(el, html2);
+    console.log(eq);
+    // if (!eq) {
+        console.log(`el`, removeWhitespace(removeComments(el).outerHTML));
+        console.log(`html2`, removeWhitespace(html2));
+    // }
+
+
+    function htmlEquivalent(el, html) {
+        return removeWhitespace(removeComments(el).outerHTML) === removeWhitespace(html);
+    }
+
+    function removeComments(node) {
+        if (!node || !node.childNodes) throw Error(`Not a node I know.`);
+
+        node.childNodes.forEach(n => n.nodeType === 8 ? node.removeChild(n) : removeComments(n));
+        return node;
+    }
+
+    function removeWhitespace(str) {
+        return str.trim().replace(/\s*\n\s*/gm, ``).replace(/\s{2,}/g, ` `);
+    }
+</script>
+
+</body>
+</html>
